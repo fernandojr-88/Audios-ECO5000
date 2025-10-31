@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processador de Áudio - Filtros Highpass e Lowpass</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Processador de Áudio ECO5000</h1>
+            <p class="subtitle">Aplicação de Filtros Highpass e Lowpass em Arquivos WAV</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Seção de Upload -->
+            <section class="card upload-section">
+                <h2>1. Carregar Áudio</h2>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".wav" style="display: none;">
+                    <div class="upload-content">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Clique aqui ou arraste um arquivo .WAV</p>
+                        <span class="file-info" id="fileInfo"></span>
+                    </div>
+                </div>
+                <div class="audio-info" id="audioInfo" style="display: none;">
+                    <div class="info-item">
+                        <span class="label">Arquivo:</span>
+                        <span id="fileName"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Taxa de Amostragem:</span>
+                        <span id="sampleRate"></span> Hz
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Duração:</span>
+                        <span id="duration"></span> s
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Controles de Filtro -->
+            <section class="card filter-section">
+                <h2>2. Configurar Filtros</h2>
+                <div class="filter-controls">
+                    <div class="filter-control">
+                        <label for="highpassSlider">
+                            <span>Filtro Highpass (Hz)</span>
+                            <span class="value-display" id="highpassValue">0</span>
+                        </label>
+                        <input type="range" id="highpassSlider" min="0" max="20000" value="0" step="10">
+                        <div class="slider-labels">
+                            <span>0 Hz</span>
+                            <span>20 kHz</span>
+                        </div>
+                        <button class="btn-toggle" id="highpassToggle" data-filter="highpass">Desabilitado</button>
+                    </div>
+
+                    <div class="filter-control">
+                        <label for="lowpassSlider">
+                            <span>Filtro Lowpass (Hz)</span>
+                            <span class="value-display" id="lowpassValue">0</span>
+                        </label>
+                        <input type="range" id="lowpassSlider" min="0" max="20000" value="0" step="10">
+                        <div class="slider-labels">
+                            <span>0 Hz</span>
+                            <span>20 kHz</span>
+                        </div>
+                        <button class="btn-toggle" id="lowpassToggle" data-filter="lowpass">Desabilitado</button>
+                    </div>
+                </div>
+                <button class="btn-primary" id="processBtn" disabled>Processar Áudio</button>
+            </section>
+
+            <!-- Seção de Visualização -->
+            <section class="card visualization-section">
+                <h2>3. Visualização</h2>
+                <div class="chart-container">
+                    <div class="chart-wrapper">
+                        <h3>Forma de Onda (Domínio do Tempo)</h3>
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>Espectro de Frequência (FFT)</h3>
+                        <canvas id="freqChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Pré-visualização -->
+            <section class="card preview-section">
+                <h2>4. Pré-visualização de Áudio</h2>
+                <div class="audio-player">
+                    <div class="player-controls">
+                        <button class="btn-secondary" id="playOriginalBtn" disabled>
+                            ▶️ Reproduzir Original
+                        </button>
+                        <button class="btn-secondary" id="playFilteredBtn" disabled>
+                            ▶️ Reproduzir Filtrado
+                        </button>
+                        <button class="btn-secondary" id="stopBtn" disabled>
+                            ⏹️ Parar
+                        </button>
+                    </div>
+                    <audio id="audioPlayer" controls style="display: none;"></audio>
+                </div>
+            </section>
+
+            <!-- Seção de Download -->
+            <section class="card download-section">
+                <h2>5. Download</h2>
+                <div class="download-content">
+                    <p>Baixe o áudio processado com os filtros aplicados:</p>
+                    <button class="btn-success" id="downloadBtn" disabled>
+                        ⬇️ Baixar Áudio Processado
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Processando áudio...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
+
+

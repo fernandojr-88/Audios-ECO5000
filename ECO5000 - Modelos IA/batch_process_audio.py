@@ -1,6 +1,6 @@
 """
-Script para processar em lote os arquivos de áudio das pastas Leak-Metal e NoLeak-Metal
-Aplica filtros: Highpass 400 Hz e Lowpass 1000 Hz
+Script para processar em lote os arquivos de áudio das pastas Leak-NonMetal e NoLeak-NonMetal
+Aplica filtros: Highpass 50 Hz e Lowpass 460 Hz
 Gera novas pastas com os arquivos filtrados
 """
 
@@ -61,7 +61,7 @@ def apply_filters(audio_data, sample_rate, highpass_freq=None, lowpass_freq=None
     return filtered_audio
 
 
-def process_audio_file(input_path, output_path, highpass_freq=400, lowpass_freq=1000):
+def process_audio_file(input_path, output_path, highpass_freq=40, lowpass_freq=460):
     """
     Processa um único arquivo de áudio
     
@@ -90,7 +90,7 @@ def process_audio_file(input_path, output_path, highpass_freq=400, lowpass_freq=
         return False
 
 
-def process_folder(input_folder, output_folder, highpass_freq=400, lowpass_freq=1000):
+def process_folder(input_folder, output_folder, highpass_freq=40, lowpass_freq=460):
     """
     Processa todos os arquivos .wav de uma pasta
     
@@ -138,15 +138,15 @@ def process_folder(input_folder, output_folder, highpass_freq=400, lowpass_freq=
 
 def main():
     """
-    Função principal: processa as pastas Leak-Metal e NoLeak-Metal
+    Função principal: processa as pastas Leak-NonMetal e NoLeak-NonMetal
     """
     # Configurações
     BASE_PATH = os.path.dirname(os.path.abspath(__file__))
     AUDIO_DIR = os.path.join(BASE_PATH, 'Audios para Treinamento')
     
     # Filtros configurados
-    HIGHPASS_FREQ = 400  # Hz
-    LOWPASS_FREQ = 1000  # Hz
+    HIGHPASS_FREQ = 50  # Hz
+    LOWPASS_FREQ = 460  # Hz
     
     print("=" * 60)
     print("Processador em Lote de Áudios - ECO5000")
@@ -165,12 +165,12 @@ def main():
     # Pastas de entrada e saída
     folders_to_process = [
         {
-            'input': os.path.join(AUDIO_DIR, 'Leak-Metal'),
-            'output': os.path.join(AUDIO_DIR, 'Leak-Metal-Filtred')
+            'input': os.path.join(AUDIO_DIR, 'Leak-NonMetal'),
+            'output': os.path.join(AUDIO_DIR, 'Leak-NonMetal-Filtred')
         },
         {
-            'input': os.path.join(AUDIO_DIR, 'NoLeak-Metal'),
-            'output': os.path.join(AUDIO_DIR, 'NoLeak-Metal-Filtred')
+            'input': os.path.join(AUDIO_DIR, 'NoLeak-NonMetal'),
+            'output': os.path.join(AUDIO_DIR, 'NoLeak-NonMetal-Filtred')
         }
     ]
     
